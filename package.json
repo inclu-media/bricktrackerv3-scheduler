@@ -1,0 +1,19 @@
+{
+  "name": "btv3-scheduler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "btv3-scheduler.js",
+  "scripts": {
+    "start": "node .",
+    "pretest": "jshint ."
+  },
+  "author": "Martin Melcher <martin@inclumedia.at>",
+  "license": "ISC",
+  "dependencies": {
+    "strong-mq": "^1.0.0",
+    "winston": "^2.1.1"
+  },
+  "devDependencies": {
+    "jshint": "^2.5.6"
+  }
+}
