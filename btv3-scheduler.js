@@ -1,33 +1,31 @@
 var mq = require('strong-mq');
 var winston = require('winston');
-
-const SYNC_STORES_INTERVAL = 600000;  // 10 Minutes
-const SYNC_EAN_INTERVAL    = 3600000; // 60 minutes
-const SYNC_STORES_JOB      = "sync-stores";
-const SYNC_EAN_JOB         = "sync-ean";
-const QUEUE_NAME           = "btv3";
-const AMPQ_HOST            = "ampq://localhost";
+var config = require('config');
+var splunk = require('winston-splunk').splunk;
 
 function launch() {
-    var connection = mq.create().open(AMPQ_HOST);
-    var push = connection.createPushQueue(QUEUE_NAME);
+    var connection = mq.create().open("ampg://" + config.get('ampgHost'));
+    var push = connection.createPushQueue(config.get('queueName'));
+    winston.add(splunk, {
+        splunkHost: config.get('logHost')
+    });
 
     /** Store Synchronisation */
     setInterval(
         function () {
-            push.publish(SYNC_STORES_JOB);
+            push.publish(config.get('syncStoresJob'));
             winston.info('Store sync request queued.', {timestamp: Date.now(), pid: process.pid});
         },
-        SYNC_STORES_INTERVAL
+        config.get('syncStoresInterval')
     );
 
     /** EAN Synchronisation */
     setInterval(
         function () {
-            push.publish(SYNC_EAN_JOB);
+            push.publish(config.get('syncEANJob'));
             // TODO: logging
         },
-        SYNC_EAN_INTERVAL
+        config.get('syncEANInterval')
     );
 }
 
