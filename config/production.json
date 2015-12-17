@@ -1,5 +1,5 @@
 {
-  "ampgHost": "mq",
+  "amqpHost": "mq",
   "logHost": "log",
   "syncStoresInterval": 600000,
   "syncEANInterval": 3600000

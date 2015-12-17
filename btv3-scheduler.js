@@ -4,17 +4,32 @@ var config = require('config');
 var splunk = require('winston-splunk').splunk;
 
 function launch() {
-    var connection = mq.create().open("ampg://" + config.get('ampgHost'));
-    var push = connection.createPushQueue(config.get('queueName'));
+
+    // init logger
     winston.add(splunk, {
         splunkHost: config.get('logHost')
     });
 
+    // init message queue
+    var connection = mq.create({
+        provider: 'amqp',
+        host: config.get('amqpHost'),
+        port: config.get('amqpPort')
+    });
+    connection.open().on('error', function() {
+        winston.log('error','Error connecting to messaging server.');
+
+    });
+    var push = connection.createPushQueue(config.get('queueName'));
+
+    winston.log('info','Store sync scheduler started. Interval: %d ms.', config.get('syncStoresInterval'));
+    winston.log('info','EAN sync scheduler started. Interval: %d ms.', config.get('syncEANInterval'));
+
     /** Store Synchronisation */
     setInterval(
         function () {
-            push.publish(config.get('syncStoresJob'));
-            winston.info('Store sync request queued.', {timestamp: Date.now(), pid: process.pid});
+            push.publish({job: config.get('syncStoresJob')});
+            winston.log('info','New store sync request queued.');
         },
         config.get('syncStoresInterval')
     );
@@ -22,8 +37,8 @@ function launch() {
     /** EAN Synchronisation */
     setInterval(
         function () {
-            push.publish(config.get('syncEANJob'));
-            // TODO: logging
+            push.publish({job: config.get('syncEANJob')});
+            winston.log('info','New EAN sync request queued.');
         },
         config.get('syncEANInterval')
     );

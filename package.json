@@ -1,14 +1,14 @@
 {
   "name": "btv3-scheduler",
   "version": "1.0.0",
-  "description": "",
+  "description": "Scheduler for Bricktracker V3 sync tasks.",
   "main": "btv3-scheduler.js",
   "scripts": {
     "start": "node .",
     "pretest": "jshint ."
   },
   "author": "Martin Melcher <martin@inclumedia.at>",
-  "license": "ISC",
+  "license": "ECL-2.0",
   "dependencies": {
     "config": "^1.17.1",
     "strong-mq": "^1.0.0",

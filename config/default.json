@@ -1,9 +1,10 @@
 {
-  "ampgHost": "192.168.99.100",
+  "amqpHost": "192.168.99.100",
+  "amqpPort": 5672,
   "logHost": "192.168.99.100",
   "queueName": "btv3",
   "syncStoresJob": "sync-stores",
   "syncEANJob": "sync-ean",
-  "syncStoresInterval": 300000,
-  "syncEANInterval": 300000
+  "syncStoresInterval": 150000,
+  "syncEANInterval": 150000
 }
