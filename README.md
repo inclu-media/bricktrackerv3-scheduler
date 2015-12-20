@@ -1,12 +1,25 @@
-DEV Environment
----------------
+Configuration
+=============
+
+For staging and prod deployments use the following script:
 
 ```
-> slc deploy -s scheduler http://192.168.99.100 1.0.0
+#!/usr/bin/env bash
+
+SRV_PROD=http://52.21.77.232
+SRV_STAG=http://192.168.99.100
+
+if [ -z "$1" ]; then
+  echo usage: $0 prod\|stag
+  exit
+fi
+
+SRV=$SRV_STAG
+if [ $1 = "prod" ]; then
+  SRV=$SRV_PROD
+fi
+
+echo Deploying to $1: $SRV
+slc build --git
+slc deploy -s scheduler $SRV
 ```
-The last part (1.0.0) is the git branch to be deployed.
-
-PROD Environment
-----------------
-
-TODO: Prod host
