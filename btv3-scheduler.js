@@ -23,7 +23,7 @@ function launch() {
     var push = connection.createPushQueue(config.get('queueName'));
 
     winston.log('info','Store sync scheduler started. Interval: %d ms.', config.get('syncStoresInterval'));
-    winston.log('info','EAN sync scheduler started. Interval: %d ms.', config.get('syncEANInterval'));
+    winston.log('info','Amazon sync scheduler started. Interval: %d ms.', config.get('syncEANInterval'));
 
     /** Store Synchronisation */
     setInterval(
@@ -38,7 +38,7 @@ function launch() {
     setInterval(
         function () {
             push.publish({job: config.get('syncEANJob')});
-            winston.log('info','New EAN sync request queued.');
+            winston.log('info','New Amazon sync request queued.');
         },
         config.get('syncEANInterval')
     );
