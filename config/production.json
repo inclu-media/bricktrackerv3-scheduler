@@ -1,6 +1,6 @@
 {
   "amqpHost": "mq",
   "logHost": "log",
-  "syncStoresInterval": 120000,
+  "syncStoresInterval": 600000,
   "syncEANInterval": 3600000
 }
